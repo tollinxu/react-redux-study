@@ -1,0 +1,17 @@
+[
+    {
+        "id":100,
+        "text": "学习react",
+        "completedStatus": false
+    },
+    {
+        "id":200,
+        "text": "学习redux",
+        "completedStatus": true
+    },
+    {
+        "id":300,
+        "text": "学习react-redux",
+        "completedStatus": true
+    }
+]

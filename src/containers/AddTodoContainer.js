@@ -9,7 +9,7 @@ const mapDispatchToProps = dispatch =>({
  
 
 const mapStateToProps = state => ({
-   text: state.text
+   text: state.get("text")
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddTodo)

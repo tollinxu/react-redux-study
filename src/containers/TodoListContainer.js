@@ -13,16 +13,16 @@ const getValidateItems = (items, filter) => {
       case "all":
         return true;
       case "completed":
-        return item.completedStatus === true;
+        return item.get("completedStatus") === true;
       case "active":
-        return item.completedStatus === false;
+        return item.get("completedStatus") === false;
       default:
         return false;
     }
   });
 };
 const mapStateToProps = state => ({
-  todos: getValidateItems(state.todos.data, state.filter)
+  todos: getValidateItems(state.getIn(["todos","data"]), state.get("filter")).toJS()
 });
 
 export default connect(

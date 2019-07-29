@@ -8,7 +8,7 @@ const mapDispatchToProps = dispatch =>({
  
 
 const mapStateToProps = state => ({
-   filter: state.filter
+   filter: state.get("filter")
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Footer)

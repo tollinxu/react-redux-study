@@ -6,7 +6,7 @@ import {
   FETCH_TODO_ITEMS_FAID
 } from "../actions/actionTypes";
 
-import Immutable from "Immutable"
+import Immutable from "immutable";
 
 const intialTodos = {
   isFetching: false,
@@ -14,21 +14,19 @@ const intialTodos = {
   data: []
 };
 
-const reducer = (state = [], action) => {
+const reducer = (state = Immutable.fromJS([]), action) => {
   switch (action.type) {
     case ADD_TODO:
-      return [
-        ...state,
-        {
-          id: action.id,
-          text: action.text,
-          completedStatus: false
-        }
-      ];
+      const item = Immutable.fromJS({
+        id: action.id,
+        text: action.text,
+        completedStatus: false
+      });
+      return state.push(item);
     case TOGGLE_TODO:
       return state.map(item =>
-        item.id === action.id
-          ? { ...item, completedStatus: !item.completedStatus }
+        item.get("id") === action.id
+          ? item.set("completedStatus", !item.get("completedStatus"))
           : item
       );
     default:
@@ -39,30 +37,24 @@ const reducer = (state = [], action) => {
 const todos = (state = Immutable.fromJS(intialTodos), action) => {
   switch (action.type) {
     case FETCH_TODO_ITEMS:
-    state.set("isFetching", true);
-      return {
-        ...state,
-        isFetching: true
-      };
+      return state.set("isFetching", true);
 
     case FETCH_TODO_ITEMS_SUCCESS:
-      return {
+      return state.merge({
         isFetching: false,
         isSuccess: true,
-        data: action.data
-      };
+        data: Immutable.fromJS(action.data)
+      });
     case FETCH_TODO_ITEMS_FAID:
-      return {
+      return state.merge({
         isFetching: false,
         isSuccess: false,
         error: action.error
-      };
+      });
 
     default:
-      return {
-        ...state,
-        data: reducer(state.data, action)
-      };
+      const data = state.get("data");
+      return state.set("data", reducer(data, action));
   }
 };
 
